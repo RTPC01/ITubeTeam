@@ -35,7 +35,7 @@ function Login() {
     return (
         <section className="bg-gray-50 dark:bg-gray-900">
             <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-                <a href="#" className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
+                <a href="/" className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
                     <img className="w-8 h-8 mr-2" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"
                          alt="logo"/>
                     ITube
@@ -70,22 +70,25 @@ function Login() {
                                                className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"/>
                                     </div>
                                     <div className="ml-3 text-sm">
-                                        <label htmlFor="remember" className="text-gray-500 dark:text-gray-300">Remember
-                                            me</label>
+                                        <label htmlFor="remember" className="text-gray-500 dark:text-gray-300">
+                                            Remember me
+                                        </label>
                                     </div>
                                 </div>
                                 <a href="#"
-                                   className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">Forgot
-                                    password?</a>
+                                   className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">
+                                    Forgot password?
+                                </a>
                             </div>
                             <button type="submit"
-                                    className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Sign
-                                in
+                                    className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                                Sign in
                             </button>
                             <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                                Don’t have an account yet? <a href="/register"
-                                                              className="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign
-                                up</a>
+                                Don’t have an account yet?
+                                <a href="/register" className="font-medium text-primary-600 hover:underline dark:text-primary-500">
+                                    Sign up
+                                </a>
                             </p>
                         </form>
                     </div>

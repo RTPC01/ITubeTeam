@@ -30,12 +30,6 @@ public class SecurityConfig {
                                 .anyRequest().authenticated()
                 )
                 .formLogin(AbstractHttpConfigurer::disable)
-//                .formLogin(formLogin ->
-//                                .loginPage("/auth/login")
-//                                .defaultSuccessUrl("/", true)
-//                                .failureUrl("/auth/login?error=true")
-//                                .permitAll()
-//                )
                 .logout(logout ->
                         logout
                                 .logoutUrl("/logout")

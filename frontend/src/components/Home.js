@@ -1,8 +1,17 @@
 import React, { useState } from 'react';
 import Breadcrumb from "./Breadcrumb";
 import DropdownButton from "./DropdownButton";
+import StickyButton from "./StickyButton";
+import CamIcon from "../svg/CamIcon";
+import VideoPostModal from "./VideoPostModal";
+import LogoImg from "./LogoImg";
 
 function Home() {
+    const [openPostModal, setOpenPostModal] = useState(false);
+
+    const togglePostModal = () => {
+        setOpenPostModal(prevState => !prevState);
+    }
 
     return (
         <section className="bg-gray-50 py-8 antialiased dark:bg-gray-900 md:py-12">
@@ -10,8 +19,9 @@ function Home() {
                 {/* Heading & Filters */}
                 <div className="mb-4 items-end justify-between space-y-4 sm:flex sm:space-y-0 md:mb-8">
                     <Breadcrumb/>
-                    <div>
-                        <h2 className="mt-3 text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">ITube</h2>
+                    <div className="flex mt-3">
+                        <LogoImg />
+                        <h2 className="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">ITube</h2>
                     </div>
                     <div className="flex items-center space-x-4">
                         <DropdownButton
@@ -169,6 +179,8 @@ function Home() {
                     </button>
                 </div>
             </div>
+            <StickyButton buttonText="Post" buttonIcon={CamIcon} onClick={togglePostModal} />
+            <VideoPostModal isOpen={openPostModal} onClose={togglePostModal} />
         </section>
     );
 }
