@@ -1,13 +1,26 @@
-import React from "react";
+import React, {useState} from "react";
 import { useDropzone } from "react-dropzone";
+import { asyncPost } from "../api/async";
 
-function VideoPostModal({ isOpen, onClose }) {
+export default function VideoPostModal({ isOpen, onClose }) {
+    const [videoFile, setVideoFile] = useState(null);
+    const [title, setTitle] = useState("");
+    const [category, setCategory] = useState("");
+    const [description, setDescription] = useState("");
+    const [error, setError] = useState('');
+
     const labelClassName = "block mb-2 text-sm font-medium text-gray-900 dark:text-white";
     const inputClassName = "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500";
+    const videoCategory = [
+        'Game',
+        'Music',
+        'Vlog',
+        'Humor'
+    ]
 
     const onDrop = (acceptedFiles) => {
-        console.log(acceptedFiles);
-        // 여기서 파일을 처리합니다.
+        setVideoFile(acceptedFiles[0]);
+        setError('');
     };
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -15,6 +28,29 @@ function VideoPostModal({ isOpen, onClose }) {
         accept: 'video/*',
         multiple: false
     });
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        if (!videoFile) {
+            setError('Video file not found');
+            console.log(error);
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('videoFile', videoFile);
+        formData.append('title', title);
+        formData.append('category', category);
+        formData.append('description', description);
+
+        try {
+            const response = await asyncPost('api/video/upload', formData, 'multipart/form-data');
+            console.log('Success:', response);
+        } catch (error) {
+            console.log('Error:', error);
+        }
+    }
 
     return (
         <div tabIndex="-1" aria-hidden="true"
@@ -40,43 +76,40 @@ function VideoPostModal({ isOpen, onClose }) {
                             <span className="sr-only">Close modal</span>
                         </button>
                     </div>
-                    <form action="#">
+                    <form onSubmit={handleSubmit}>
                         <div className="grid gap-4 mb-4 sm:grid-cols-2">
                             <div {...getRootProps()}
                                  className="col-span-2 border-2 border-dashed border-gray-300 rounded-lg p-4 flex justify-center items-center cursor-pointer">
                                 <input {...getInputProps()} />
                                 {
                                     isDragActive ?
-                                        <p className="text-gray-500 dark:text-gray-400">Drop the video file here
-                                            ...</p> :
-                                        <p className="text-gray-500 dark:text-gray-400">Drag & drop a video file here,
-                                            or click to select one</p>
+                                        <p className="text-gray-500 dark:text-gray-400">Drop the video file here ...</p> :
+                                        videoFile ?
+                                            <p className="text-gray-500 dark:text-gray-400">{videoFile.name}</p> :
+                                            <p className="text-gray-500 dark:text-gray-400">Drag & drop a video file here,
+                                                or click to select one</p>
                                 }
                             </div>
                             <div>
-                                <label htmlFor="name"
-                                       className={labelClassName}>Name</label>
-                                <input type="text" name="name" id="name"
+                                <label htmlFor="title"
+                                       className={labelClassName}>Title</label>
+                                <input type="text" name="title" id="title"
                                        className={inputClassName}
-                                       placeholder="Type product name" required=""/>
-                            </div>
-                            <div>
-                                <label htmlFor="brand"
-                                       className={labelClassName}>Brand</label>
-                                <input type="text" name="brand" id="brand"
-                                       className={inputClassName}
-                                       placeholder="Product brand" required=""/>
+                                       placeholder="Type title" required
+                                        value={title} onChange={(e) => setTitle(e.target.value)}/>
                             </div>
                             <div>
                                 <label htmlFor="category"
                                        className={labelClassName}>Category</label>
                                 <select id="category"
-                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                    <option selected="">Select category</option>
-                                    <option value="Game">Game</option>
-                                    <option value="Humor">Humor</option>
-                                    <option value="Music">Music</option>
-                                    <option value="Vlog">Vlog</option>
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                        value={category} required onChange={(e) => setCategory(e.target.value)}>
+                                    <option value="">Select Category</option>
+                                    {
+                                        videoCategory.map((category, index) => (
+                                            <option key={index} value={category}>{category}</option>
+                                        ))
+                                    }
                                 </select>
                             </div>
                             <div className="sm:col-span-2">
@@ -84,7 +117,9 @@ function VideoPostModal({ isOpen, onClose }) {
                                        className={labelClassName}>Description</label>
                                 <textarea id="description" rows="4"
                                           className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                          placeholder="Write video description here"></textarea>
+                                          placeholder="Write video description here"
+                                          required
+                                        value={description} onChange={(e) => setDescription(e.target.value)}/>
                             </div>
                         </div>
                         <button type="submit"
@@ -96,7 +131,7 @@ function VideoPostModal({ isOpen, onClose }) {
                                       clipRule="evenodd">
                                 </path>
                             </svg>
-                            Add new product
+                            Post Video!
                         </button>
                     </form>
                 </div>
@@ -104,5 +139,3 @@ function VideoPostModal({ isOpen, onClose }) {
         </div>
     );
 }
-
-export default VideoPostModal;

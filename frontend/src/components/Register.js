@@ -19,7 +19,7 @@ const Register = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await api.post('/register', formData, {
+            const response = await api.post('/auth/register', formData, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
