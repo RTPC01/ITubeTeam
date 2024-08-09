@@ -23,4 +23,16 @@ public class PropertiesConfig {
     public static String getMongoDB() {
         return prop.getProperty("mongodb.key");
     }
+
+    public static String getCloudinaryName() {
+        return prop.getProperty("cloudinary.name");
+    }
+
+    public static String getCloudinaryKey() {
+        return prop.getProperty("cloudinary.key");
+    }
+
+    public static String getCloudinarySecret() {
+        return prop.getProperty("cloudinary.secret");
+    }
 }

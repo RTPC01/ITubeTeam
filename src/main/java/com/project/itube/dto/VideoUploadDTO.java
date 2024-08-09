@@ -5,7 +5,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Getter @Setter @ToString
-public class LoginRequest {
-    private String email;
-    private String password;
+public class VideoUploadDTO {
+    private String title;
+    private String category;
+    private String description;
 }

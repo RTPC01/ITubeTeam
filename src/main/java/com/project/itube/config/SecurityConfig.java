@@ -26,16 +26,10 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/register", "/auth/login", "/css/**", "/js/**").permitAll()
-                                .anyRequest().authenticated()
+                                .requestMatchers("/auth/register", "/auth/login", "/css/**", "/js/**").permitAll()
+                                .anyRequest().permitAll()
                 )
                 .formLogin(AbstractHttpConfigurer::disable)
-//                .formLogin(formLogin ->
-//                                .loginPage("/auth/login")
-//                                .defaultSuccessUrl("/", true)
-//                                .failureUrl("/auth/login?error=true")
-//                                .permitAll()
-//                )
                 .logout(logout ->
                         logout
                                 .logoutUrl("/logout")
