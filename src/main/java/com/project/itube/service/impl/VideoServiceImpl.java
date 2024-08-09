@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -34,7 +35,19 @@ public class VideoServiceImpl implements VideoService {
         video.setCategory(videoUploadDTO.getCategory());
         video.setDescription(videoUploadDTO.getDescription());
         video.setVideoUrl(videoUrl);
+        video.setUploadDate(videoUploadDTO.getUploadDate());
 
         return videoRepository.save(video);
     }
+
+    @Override
+    public List<Video> getAllVideos() {
+        return videoRepository.findAll();
+    }
+
+    @Override
+    public List<Video> getVideosByCategory(String category) {
+        return videoRepository.findByCategory(category);
+    }
+
 }

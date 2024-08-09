@@ -6,12 +6,22 @@ import CamIcon from "../svg/CamIcon";
 import VideoPostModal from "./VideoPostModal";
 import LogoImg from "./LogoImg";
 import HomePageListBox from "./HomePageListBox";
+import useFetch from "../api/useFetch";
 
-function Home() {
+export default function Home() {
     const [openPostModal, setOpenPostModal] = useState(false);
+    const [selectedCategory, setSelectedCategory] = useState('All');
+    const url = selectedCategory === 'All' ? '/api/video/list' : `/api/video/category/${selectedCategory}`;
+    const { data: videos, loading, error } = useFetch(url);
+
+    const categoryButtonClassName = "text-left w-full px-2 py-1";
 
     const togglePostModal = () => {
         setOpenPostModal(prevState => !prevState);
+    }
+
+    const handleCategoryChange = (category) => {
+        setSelectedCategory(category);
     }
 
     return (
@@ -26,18 +36,43 @@ function Home() {
                     </div>
                     <div className="flex items-center space-x-4">
                         <DropdownButton
-                            buttonText="Sort"
+                            buttonText="Category"
                             buttonIcon="M7 4v16M7 4l3 3M7 4 4 7m9-3h6l-6 6h6m-6.5 10 3.5-7 3.5 7M14 18h4"
                         >
-                            <a href="#">The most popular</a>
-                            <a href="#">Newest</a>
-                            <a href="#">Random</a>
-                            <a href="#">Recommend</a>
+                            <button
+                                className={categoryButtonClassName}
+                                onClick={() => handleCategoryChange('All')}>
+                                All
+                            </button>
+                            <button
+                                className={categoryButtonClassName}
+                                onClick={() => handleCategoryChange('Game')}>
+                                Game
+                            </button>
+                            <button
+                                className={categoryButtonClassName}
+                                onClick={() => handleCategoryChange('Music')}>
+                                Music
+                            </button>
+                            <button
+                                className={categoryButtonClassName}
+                                onClick={() => handleCategoryChange('Vlog')}>
+                                Vlog
+                            </button>
+                            <button
+                                className={categoryButtonClassName}
+                                onClick={() => handleCategoryChange('Humor')}>
+                                Humor
+                            </button>
                         </DropdownButton>
                     </div>
                 </div>
                 <div className="mb-4 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-3 xl:grid-cols-4">
-                    <HomePageListBox />
+                    {loading && <p>Loading....</p>}
+                    {error && <p>Error loading videos: {error.message}</p>}
+                    {videos && videos.map(video => (
+                        <HomePageListBox key={video.id} video={video}/>
+                    ))}
                 </div>
                 <div className="w-full text-center">
                     <button type="button"
@@ -46,10 +81,8 @@ function Home() {
                     </button>
                 </div>
             </div>
-            <StickyButton buttonText="Post" buttonIcon={CamIcon} onClick={togglePostModal} />
-            <VideoPostModal isOpen={openPostModal} onClose={togglePostModal} />
+            <StickyButton buttonText="Post" buttonIcon={CamIcon} onClick={togglePostModal}/>
+            <VideoPostModal isOpen={openPostModal} onClose={togglePostModal}/>
         </section>
     );
 }
-
-export default Home;
