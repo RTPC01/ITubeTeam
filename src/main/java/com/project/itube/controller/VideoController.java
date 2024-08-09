@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/video")
@@ -36,4 +37,17 @@ public class VideoController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
+
+    @GetMapping("/list")
+    public ResponseEntity<List<Video>> getAllVideos() {
+        List<Video> videos = videoService.getAllVideos();
+        return ResponseEntity.ok(videos);
+    }
+
+    @GetMapping("/category/{category}")
+    public ResponseEntity<List<Video>> getVideosByCategory(@PathVariable String category) {
+        List<Video> videos = videoService.getVideosByCategory(category);
+        return ResponseEntity.ok(videos);
+    }
+
 }
