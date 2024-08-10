@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import { useDropzone } from "react-dropzone";
-import { asyncPost } from "../api/async";
+import { asyncPost } from "../../api/async";
 
 export default function VideoPostModal({ isOpen, onClose }) {
     const [videoFile, setVideoFile] = useState(null);

@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/video")
@@ -48,6 +49,13 @@ public class VideoController {
     public ResponseEntity<List<Video>> getVideosByCategory(@PathVariable String category) {
         List<Video> videos = videoService.getVideosByCategory(category);
         return ResponseEntity.ok(videos);
+    }
+
+    @GetMapping("/getVideo/{id}")
+    public ResponseEntity<Video> getVideoById(@PathVariable String id) {
+        Optional<Video> video = videoService.getVideoById(id);
+
+        return video.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(null));
     }
 
 }
