@@ -1,5 +1,6 @@
 package com.project.itube.config;
 
+import com.project.itube.filter.JwtAuthenticationFilter;
 import com.project.itube.security.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -19,6 +21,9 @@ public class SecurityConfig {
 
     @Autowired
     private CustomUserDetailsService userDetailsService;
+
+    @Autowired
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -29,6 +34,7 @@ public class SecurityConfig {
                                 .requestMatchers("/auth/register", "/auth/login", "/css/**", "/js/**").permitAll()
                                 .anyRequest().permitAll()
                 )
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .logout(logout ->
                         logout
@@ -36,6 +42,7 @@ public class SecurityConfig {
                                 .logoutSuccessUrl("/auth/login?logout")
                                 .permitAll()
                 );
+
 
         return http.build();
     }

@@ -1,7 +1,8 @@
 import React from "react";
-import EyeIcon from "../svg/EyeIcon";
-import PenIcon from "../svg/PenIcon";
-import EmptyHeart from "../svg/EmptyHeart";
+import { Link } from "react-router-dom";
+import EyeIcon from "../../svg/EyeIcon";
+import PenIcon from "../../svg/PenIcon";
+import EmptyHeart from "../../svg/EmptyHeart";
 
 export default function HomePageListBox ({ video }) {
 
@@ -16,23 +17,12 @@ export default function HomePageListBox ({ video }) {
                 <img
                     className="mx-auto h-full dark:hidden"
                     src={videoThumbnail}
+                    alt={video.title}
                 />
                 <img
                     className="mx-auto hidden h-full dark:block"
                     src={videoThumbnail}
-                />
-                {/*<video*/}
-                {/*    className="mx-auto h-full dark:hidden"*/}
-                {/*    src={video.videoUrl}*/}
-                {/*    poster={videoThumbnail}*/}
-                {/*    alt={video.title}*/}
-                {/*/>*/}
-                {/*<video*/}
-                {/*    className="mx-auto hidden h-full dark:block"*/}
-                {/*    src={video.videoUrl}*/}
-                {/*    poster={videoThumbnail}*/}
-                {/*    alt={video.title}*/}
-                {/*/>*/}
+                    alt={video.title}/>
             </div>
             <div className="pt-6">
                 <div className="mb-4 flex items-center justify-between gap-4">
@@ -115,11 +105,11 @@ export default function HomePageListBox ({ video }) {
                 </ul>
 
                 <div className="mt-4 flex items-center justify-between gap-4">
-                    <button type="button"
-                            className="inline-flex items-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4  focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                    <Link to={`/watchVideo/${video.id}`}
+                          className="inline-flex items-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
                         <EyeIcon className="-ms-2 me-2 mr-2 h-5 w-5" aria-hidden="true" />
                         View
-                    </button>
+                    </Link>
                 </div>
             </div>
         </div>
