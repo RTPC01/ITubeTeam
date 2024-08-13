@@ -24,8 +24,10 @@ function Login() {
                 },
                 withCredentials: true,  // 쿠키를 포함한 요청
             });
-            console.log(response);
             if (response.status === 200) {
+                localStorage.setItem('token', response.data);
+                // 새로고침이나 navigate를 바로 실행하지 않고, 인증 상태를 다시 가져오도록 설정
+                await api.get('/auth/getCurrentUser'); // 인증 상태를 강제로 갱신
                 navigate('/');
             }
         } catch (error) {
@@ -35,7 +37,6 @@ function Login() {
 
     return (
         <>
-            <Header />
             <section className="bg-gray-50 dark:bg-gray-900">
                 <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
                     <a href="/frontend/public" className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">

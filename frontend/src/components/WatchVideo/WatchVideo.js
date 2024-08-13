@@ -12,7 +12,6 @@ export default function WatchVideo(){
     const loadingHTML = <p>Loading...</p>
     return (
         <>
-            <Header />
             <section className="bg-white py-4 antialiased dark:bg-gray-900 md:py-8">
                 <div className="mx-auto max-w-screen-xl px-4 2xl:px-0">
                     <div className="mx-auto max-w-5xl">
