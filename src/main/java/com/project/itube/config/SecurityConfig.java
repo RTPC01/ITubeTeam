@@ -53,11 +53,11 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+    public AuthenticationManager authenticationManager(HttpSecurity http, CustomUserDetailsService customUserDetailsService) throws Exception {
         AuthenticationManagerBuilder authenticationManagerBuilder =
                 http.getSharedObject(AuthenticationManagerBuilder.class);
         authenticationManagerBuilder
-                .userDetailsService(userDetailsService)
+                .userDetailsService(customUserDetailsService)
                 .passwordEncoder(passwordEncoder());
         return authenticationManagerBuilder.build();
     }

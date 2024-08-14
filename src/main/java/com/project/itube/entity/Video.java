@@ -14,7 +14,7 @@ public class Video {
 
     @Id
     private String id;
-
+    private String authorId;
     private String title;
     private String category;
     private String description;

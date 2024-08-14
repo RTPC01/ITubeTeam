@@ -12,19 +12,14 @@ export const AuthProvider = ({ children }) => {
                 try {
                     const response = await api.get('/auth/getCurrentUser');
                     setUser(response.data);
+                    console.log(response.data);
                 } catch (error) {
                     localStorage.removeItem('token');
-                    console.log(localStorage.getItem('token'));
-                    console.error('User is not authenticated', error);
                 }
             };
             fetchUser();
         }
     }, []);
-
-    useEffect(() => {
-        console.log(user);
-    }, [user]);
 
     return (
         <AuthContext.Provider value = {{ user }}>

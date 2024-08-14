@@ -1,5 +1,7 @@
 package com.project.itube.filter;
 
+import com.project.itube.entity.CustomUserDetails;
+import com.project.itube.security.CustomUserDetailsService;
 import com.project.itube.security.JwtUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -19,11 +21,11 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtUtils jwtUtils;
-    private final UserDetailsService userDetailsService;
+    private final CustomUserDetailsService customUserDetailsService;
 
-    public JwtAuthenticationFilter(JwtUtils jwtUtils, UserDetailsService userDetailsService) {
+    public JwtAuthenticationFilter(JwtUtils jwtUtils, CustomUserDetailsService customUserDetailsService) {
         this.jwtUtils = jwtUtils;
-        this.userDetailsService = userDetailsService;
+        this.customUserDetailsService = customUserDetailsService;
     }
 
     @Override
@@ -33,9 +35,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (jwt != null && jwtUtils.validateToken(jwt)) {
             String username = jwtUtils.getUsernameFromToken(jwt);
 
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            CustomUserDetails customUserDetails = customUserDetailsService.loadUserByUsername(username);
             UsernamePasswordAuthenticationToken authentication =
-                    new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                    new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
