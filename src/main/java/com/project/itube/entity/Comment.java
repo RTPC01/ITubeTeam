@@ -7,18 +7,15 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
-@Document(collection = "videos")
 @Data
+@Document(collection = "comments")
 @Builder
-public class Video {
-
+public class Comment {
     @Id
     private String id;
+    private String videoId;  // 연결된 게시글(Video)의 id
     private String authorId;
-    private String title;
-    private String category;
     private String description;
-    private String videoUrl;
-    private LocalDateTime uploadDate;
-    private int commentCount = 0;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }

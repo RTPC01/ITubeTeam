@@ -1,5 +1,6 @@
 package com.project.itube.controller;
 
+import com.project.itube.dto.CurrentUserDTO;
 import com.project.itube.dto.LoginRequest;
 import com.project.itube.entity.CustomUserDetails;
 import com.project.itube.security.JwtUtils;
@@ -11,8 +12,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -29,17 +28,20 @@ public class LoginController {
         this.securityUtil = securityUtil;
     }
 
-    @GetMapping("/login")
-    public String loginPage(Model model) {
-        model.addAttribute("loginRequest", new LoginRequest());
-        return "login";
-    }
-
     @GetMapping("/getCurrentUser")
     public ResponseEntity<?> getCurrentUser() {
         try {
             CustomUserDetails customUserDetails = securityUtil.getCurrentUser();
-            return ResponseEntity.ok(customUserDetails);
+            CurrentUserDTO currentUserDTO = CurrentUserDTO.builder().
+                id(customUserDetails.getId()).
+                email(customUserDetails.getEmail()).
+                firstName(customUserDetails.getFirstName()).
+                lastName(customUserDetails.getLastName()).
+                nickname(customUserDetails.getNickname()).
+                profileImg(customUserDetails.getProfileImg()).
+                phoneNumber(customUserDetails.getPhoneNumber()).
+                role(customUserDetails.getRole()).build();
+            return ResponseEntity.ok(currentUserDTO);
         } catch(Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
@@ -56,7 +58,6 @@ public class LoginController {
             );
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
-
             String jwt = jwtUtils.generateToken(authentication);
 
             return ResponseEntity.ok(jwt);

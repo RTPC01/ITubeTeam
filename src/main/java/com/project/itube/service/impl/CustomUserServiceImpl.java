@@ -3,6 +3,7 @@ package com.project.itube.service.impl;
 import com.project.itube.cloudinary.CloudinaryUploader;
 import com.project.itube.common.UserStatus;
 import com.project.itube.dto.RegisterUserDTO;
+import com.project.itube.dto.UserInfoDTO;
 import com.project.itube.entity.CustomUserDetails;
 import com.project.itube.repository.UserRepository;
 import com.project.itube.service.CustomUserService;
@@ -13,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class CustomUserServiceImpl implements CustomUserService {
@@ -39,6 +41,12 @@ public class CustomUserServiceImpl implements CustomUserService {
     @Override
     public CustomUserDetails findByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public Optional<UserInfoDTO> getUserInfoById(String id) {
+        return userRepository.findById(id)
+                .map(user -> new UserInfoDTO(user.getId(), user.getNickname(), user.getProfileImg()));
     }
 
     @Override

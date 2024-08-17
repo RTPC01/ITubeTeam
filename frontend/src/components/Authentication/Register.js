@@ -2,9 +2,17 @@ import React, { useState } from 'react';
 import api from '../../api/api.js';
 import {useDropzone} from "react-dropzone";
 import {useNavigate} from "react-router-dom";
+import LoginModal from "../Modal/LoginModal";
 
 const Register = () => {
     const navigate = useNavigate();
+    const [modalOpen, setModalOpen] = useState(false);
+    const openModal = () => {
+        setModalOpen(true);
+    };
+    const closeModal = () => {
+        setModalOpen(false);
+    };
     const [formData, setFormData] = useState({
         username: '',
         password: '',
@@ -135,14 +143,17 @@ const Register = () => {
                                     an account
                                 </button>
                                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                                    Already have an account? <a href="/login"
-                                                                className="font-medium text-primary-600 hover:underline dark:text-primary-500">Login
-                                    here</a>
+                                    Already have an account?
+                                    <a onClick={openModal}
+                                       className="font-medium text-primary-600 hover:underline dark:text-primary-500">
+                                        Login here
+                                    </a>
                                 </p>
                             </form>
                         </div>
                     </div>
                 </div>
+                <LoginModal isOpen={modalOpen} onClose={closeModal} />
             </section>
 
         </>

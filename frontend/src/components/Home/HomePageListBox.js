@@ -1,13 +1,12 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { Link } from "react-router-dom";
 import EyeIcon from "../../svg/EyeIcon";
 import PenIcon from "../../svg/PenIcon";
 import EmptyHeart from "../../svg/EmptyHeart";
+import useFetch from "../../api/useFetch";
 
 export default function HomePageListBox ({ video }) {
-
-    console.log(video);
-
+    const {data: userData, loading, error} = useFetch(`userInfo/${video.authorId}`);
     const videoThumbnail = video.videoUrl ? video.videoUrl.replace(/\.[^/.]+$/, '.jpg') : null;
 
     return (
@@ -91,7 +90,9 @@ export default function HomePageListBox ({ video }) {
                 <ul className="mt-2 flex items-center gap-4">
                     <li className="flex items-center gap-2">
                         <PenIcon/>
-                        <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Author</p>
+                        <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                            { loading ? "Loading..." : userData.nickname }
+                        </p>
                     </li>
 
                     <li className="flex items-center gap-2">

@@ -6,6 +6,7 @@ import com.project.itube.entity.Video;
 import com.project.itube.repository.VideoRepository;
 import com.project.itube.security.SecurityUtil;
 import com.project.itube.service.VideoService;
+import com.project.itube.utils.DateTimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,12 +36,12 @@ public class VideoServiceImpl implements VideoService {
         String authorId;
         String videoUrl = uploadResult.get("url").toString();
 
-        Video video = new Video();
-        video.setTitle(videoUploadDTO.getTitle());
-        video.setCategory(videoUploadDTO.getCategory());
-        video.setDescription(videoUploadDTO.getDescription());
-        video.setVideoUrl(videoUrl);
-        video.setUploadDate(videoUploadDTO.getUploadDate());
+        Video video = Video.builder()
+                .title(videoUploadDTO.getTitle())
+                .category(videoUploadDTO.getCategory())
+                .description(videoUploadDTO.getDescription())
+                .videoUrl(videoUrl)
+                .uploadDate(DateTimeUtils.getKoreanLocalDateTime()).build();
         try {
             authorId = securityUtil.getCurrentUserId();
         } catch (Exception e) {
