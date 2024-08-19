@@ -20,6 +20,8 @@ function useFetch(url, method = 'GET', body = null, headers = {}) {
     }, [url, method, body, headers]);
 
     useEffect(() => {
+        if (!url) return;
+
         let isMounted = true;
 
         const fetchData = async () => {

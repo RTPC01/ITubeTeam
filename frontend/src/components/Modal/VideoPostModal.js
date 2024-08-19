@@ -19,11 +19,9 @@ function VideoPostModal({ onClose }) {
         'Humor'
     ]
 
-    const onDrop = (acceptedFiles) => {
-        if (acceptedFiles > 0) {
-            setVideoFile(acceptedFiles[0]);
-            setError('');
-        }
+    const onDrop = (acceptedFile) => {
+        setVideoFile(acceptedFile[0]);
+        setError('')
     };
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -67,7 +65,7 @@ function VideoPostModal({ onClose }) {
             <form onSubmit={handleSubmit}>
                 <div className="grid gap-4 mb-4 sm:grid-cols-2">
                     <div {...getRootProps()}
-                         className="col-span-2 border-2 border-dashed border-gray-300 rounded-lg p-4 flex justify-center items-center cursor-pointer">
+                         className="w-[470px] col-span-2 border-2 border-dashed border-gray-300 rounded-lg p-4 flex justify-center items-center cursor-pointer">
                         <input {...getInputProps()} />
                         {
                             isDragActive ?

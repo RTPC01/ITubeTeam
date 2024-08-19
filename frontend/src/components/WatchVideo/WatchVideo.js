@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import Header from "../Layout/Header";
+import React from 'react';
 import {useParams} from "react-router-dom";
 import useFetch from "../../api/useFetch";
 import WriteComment from "./WriteComment";
@@ -28,7 +27,7 @@ export default function WatchVideo(){
                                     </h2>
                                     <div>
                                         <VideoEditButton video={video} />
-                                        <VideoDeleteButton />
+                                        <VideoDeleteButton videoId={video.id} />
                                     </div>
                                 </div>
                                 <div className="my-8 xl:mb-16 xl:mt-12">

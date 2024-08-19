@@ -19,11 +19,9 @@ function VideoEditModal({ onClose, video }) {
         'Humor'
     ]
 
-    const onDrop = (acceptedFiles) => {
-        if (acceptedFiles > 0) {
-            setVideoFile(acceptedFiles[0]);
-            setError('');
-        }
+    const onDrop = (acceptedFile) => {
+        setVideoFile(acceptedFile[0]);
+        setError('');
     };
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -35,6 +33,7 @@ function VideoEditModal({ onClose, video }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const formData = new FormData();
+        formData.append('id', video.id);
         formData.append('videoFile', videoFile);
         formData.append('title', title);
         formData.append('category', category);
@@ -59,15 +58,17 @@ function VideoEditModal({ onClose, video }) {
             <form onSubmit={handleSubmit}>
                 <div className="grid gap-4 mb-4 sm:grid-cols-2">
                     <div {...getRootProps()}
-                         className="col-span-2 border-2 border-dashed border-gray-300 rounded-lg p-4 flex justify-center items-center cursor-pointer">
+                         className="w-[470px] col-span-2 border-2 border-dashed border-gray-300 rounded-lg p-4 flex justify-center items-center cursor-pointer"
+                    >
                         <input {...getInputProps()} />
                         {
                             isDragActive ?
                                 <p className="text-gray-500 dark:text-gray-400">Drop the video file here ...</p> :
                                 videoFile ?
                                     <p className="text-gray-500 dark:text-gray-400">{videoFile.name}</p> :
-                                    <p className="text-gray-500 dark:text-gray-400">Drag & drop a video file here,
-                                        or click to select one</p>
+                                    <p className="text-gray-500 dark:text-gray-400">
+                                        If you upload a new video, the existing video will be deleted.
+                                    </p>
                         }
                     </div>
                     <div>

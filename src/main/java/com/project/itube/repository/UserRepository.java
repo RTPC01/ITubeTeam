@@ -1,6 +1,5 @@
 package com.project.itube.repository;
 
-import com.project.itube.dto.CurrentUserDTO;
 import com.project.itube.entity.CustomUserDetails;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
