@@ -10,6 +10,8 @@ import java.util.Optional;
 
 public interface VideoService {
     Video uploadVideo(MultipartFile videoFIle, VideoUploadDTO videoUploadDTO) throws IOException;
+    boolean editVideo(MultipartFile videoFIle, VideoUploadDTO videoUploadDTO) throws IOException;
+    boolean deleteVideo(String videoId);
     List<Video> getAllVideos();
     List<Video> getVideosByCategory(String category);
     Optional<Video> getVideoById(String videoId);

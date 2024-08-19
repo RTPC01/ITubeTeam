@@ -17,7 +17,15 @@ public class CloudinaryUploader {
 
     public Map<String, Object> uploadVideo(MultipartFile videoFile) throws IOException {
         return cloudinaryConfig.cloudinary().uploader().upload(videoFile.getBytes(), ObjectUtils.asMap(
-                "resource_type", "video"
+                "resource_type", "video",
+                "folder", "ITubeVideos/"
+        ));
+    }
+
+    public Map uploadImage(MultipartFile file) throws IOException {
+        return cloudinaryConfig.cloudinary().uploader().upload(file.getBytes(), ObjectUtils.asMap(
+                "resource_type", "image",
+                "folder", "ITubeImages/"
         ));
     }
 }

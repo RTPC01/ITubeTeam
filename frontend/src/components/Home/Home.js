@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import Breadcrumb from "../Layout/Breadcrumb";
 import DropdownButton from "../Layout/DropdownButton";
 import StickyButton from "../Layout/StickyButton";
 import CamIcon from "../../svg/CamIcon";
-import VideoPostModal from "./VideoPostModal";
+import VideoPostModal from "../Modal/VideoPostModal";
 import LogoImg from "../Layout/LogoImg";
 import HomePageListBox from "./HomePageListBox";
 import useFetch from "../../api/useFetch";
-import Header from "../Layout/Header";
 import Pagination from "../Layout/Pagination";
 
 export default function Home() {
@@ -18,13 +17,19 @@ export default function Home() {
 
     const categoryButtonClassName = "text-left w-full px-2 py-1";
 
-    const togglePostModal = () => {
+    const togglePostModal = useCallback(() => {
         setOpenPostModal(prevState => !prevState);
-    }
+    }, []);
 
-    const handleCategoryChange = (category) => {
+    const handleCategoryChange = useCallback((category) => {
         setSelectedCategory(category);
-    }
+    }, []);
+
+    const videoList = useMemo(() => {
+        return videos && videos.map(video => (
+            <HomePageListBox key={video.id} video={video} />
+        ));
+    }, [videos]);
 
     return (
         <>
@@ -73,9 +78,7 @@ export default function Home() {
                     <div className="mb-4 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-3 xl:grid-cols-4">
                         {loading && <p>Loading....</p>}
                         {error && <p>Error loading videos: {error.message}</p>}
-                        {videos && videos.map(video => (
-                            <HomePageListBox key={video.id} video={video}/>
-                        ))}
+                        {videoList}
                     </div>
                     <div className="w-full text-center">
                         <Pagination/>

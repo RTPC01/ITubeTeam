@@ -2,6 +2,7 @@ package com.project.itube.controller;
 
 import com.project.itube.dto.VideoUploadDTO;
 import com.project.itube.entity.Video;
+import com.project.itube.security.SecurityUtil;
 import com.project.itube.service.VideoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +18,11 @@ import java.util.Optional;
 public class VideoController {
 
     private final VideoService videoService;
+    private final SecurityUtil securityUtil;
 
-    public VideoController(VideoService videoService) {
+    public VideoController(VideoService videoService, SecurityUtil securityUtil) {
         this.videoService = videoService;
+        this.securityUtil = securityUtil;
     }
 
     @PostMapping("/upload")
@@ -36,6 +39,34 @@ public class VideoController {
             return ResponseEntity.ok("Video uploaded successfully");
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/edit")
+    public ResponseEntity<String> editVideo(
+            @RequestParam(value = "videoFile", required = false) MultipartFile videoFile,
+            @ModelAttribute VideoUploadDTO videoUploadDTO) throws IOException {
+        if (videoService.editVideo(videoFile, videoUploadDTO)) {
+            return ResponseEntity.ok("Video edited successfully");
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal server error");
+        }
+    }
+
+    @DeleteMapping("/delete/{videoId}")
+    public ResponseEntity<String> deleteVideo(@PathVariable("videoId") String videoId) {
+        try {
+            boolean isDeleted = videoService.deleteVideo(videoId);
+            if (isDeleted) {
+                return ResponseEntity.ok("Video deleted successfully");
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete video");
+            }
+        } catch (Exception e) {
+            // 예외 메시지를 바디에 포함하여 클라이언트로 전송
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
         }
     }
 
@@ -54,7 +85,6 @@ public class VideoController {
     @GetMapping("/getVideo/{id}")
     public ResponseEntity<Video> getVideoById(@PathVariable String id) {
         Optional<Video> video = videoService.getVideoById(id);
-
         return video.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(null));
     }
 
