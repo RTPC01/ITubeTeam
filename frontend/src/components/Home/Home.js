@@ -17,9 +17,11 @@ export default function Home() {
     const [pageSize] = useState(4);
 
     const url = useMemo(() => {
-        const baseUrl = selectedCategory === 'All' ? '/api/video/list' : `/api/video/category`;
-        const queryParams = `?page=${currentPage}&size=${pageSize}&category=${selectedCategory}`;
-        return baseUrl + queryParams;
+        if (selectedCategory === 'All') {
+            return `/api/video/list?page=${currentPage}&size=${pageSize}`;
+        } else {
+            return `/api/video/category?category=${selectedCategory}&page=${currentPage}&size=${pageSize}`;
+        }
     }, [selectedCategory, currentPage, pageSize]);
 
     const { data: videos, loading, error } = useFetch(url);

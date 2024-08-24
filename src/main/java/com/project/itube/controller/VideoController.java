@@ -2,7 +2,6 @@ package com.project.itube.controller;
 
 import com.project.itube.dto.VideoUploadDTO;
 import com.project.itube.entity.Video;
-import com.project.itube.security.SecurityUtil;
 import com.project.itube.service.VideoService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -75,8 +73,10 @@ public class VideoController {
         return ResponseEntity.ok(videos);
     }
 
-    @GetMapping("/category/{category}")
-    public ResponseEntity<Page<Video>> getVideosByCategory(@PathVariable String category, Pageable pageable) {
+    @GetMapping("/category")
+    public ResponseEntity<Page<Video>> getVideosByCategory(@RequestParam String category, Pageable pageable) {
+        System.out.println("Category: " + category);
+        System.out.println("Pageable: " + pageable);
         Page<Video> videos = videoService.getVideosByCategory(category, pageable);
         return ResponseEntity.ok(videos);
     }
