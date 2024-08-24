@@ -67,28 +67,8 @@ export default function Header() {
                             <li>
                                 <a href="#"
                                    className={menuLiClassName}>
-                                    Company
+                                    Contact Us
                                 </a>
-                            </li>
-                            <li>
-                                <a href="#"
-                                   className={menuLiClassName}>
-                                    Marketplace</a>
-                            </li>
-                            <li>
-                                <a href="#"
-                                   className={menuLiClassName}>
-                                    Marketplace</a>
-                            </li>
-                            <li>
-                                <a href="#"
-                                   className={menuLiClassName}>
-                                    Marketplace</a>
-                            </li>
-                            <li>
-                                <a href="#"
-                                   className={menuLiClassName}>
-                                    Marketplace</a>
                             </li>
                         </ul>
                     </div>

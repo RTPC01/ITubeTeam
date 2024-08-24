@@ -13,7 +13,15 @@ import categories from "../Constants/categories";
 export default function Home() {
     const [openPostModal, setOpenPostModal] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState('All');
-    const url = selectedCategory === 'All' ? '/api/video/list' : `/api/video/category/${selectedCategory}`;
+    const [currentPage, setCurrentPage] = useState(0);
+    const [pageSize] = useState(4);
+
+    const url = useMemo(() => {
+        const baseUrl = selectedCategory === 'All' ? '/api/video/list' : `/api/video/category`;
+        const queryParams = `?page=${currentPage}&size=${pageSize}&category=${selectedCategory}`;
+        return baseUrl + queryParams;
+    }, [selectedCategory, currentPage, pageSize]);
+
     const { data: videos, loading, error } = useFetch(url);
 
     const categoryButtonClassName = "text-left w-full px-2 py-1";
@@ -26,8 +34,12 @@ export default function Home() {
         setSelectedCategory(category);
     }, []);
 
+    const handlePageChange = useCallback((newPage) => {
+        setCurrentPage(newPage);
+    }, []);
+
     const videoList = useMemo(() => {
-        return videos && videos.map(video => (
+        return videos && videos.content.map(video => (
             <HomePageListBox key={video.id} video={video} />
         ));
     }, [videos]);
@@ -65,7 +77,11 @@ export default function Home() {
                         {videoList}
                     </div>
                     <div className="w-full text-center">
-                        <Pagination/>
+                        <Pagination
+                            currentPage={currentPage}
+                            totalPages={videos ? videos.totalPages : 0}
+                            onPageChange={handlePageChange}
+                        />
                     </div>
                 </div>
                 <StickyButton buttonText="Post" buttonIcon={CamIcon} onClick={togglePostModal}/>

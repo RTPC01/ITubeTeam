@@ -4,6 +4,8 @@ import com.project.itube.dto.VideoUploadDTO;
 import com.project.itube.entity.Video;
 import com.project.itube.security.SecurityUtil;
 import com.project.itube.service.VideoService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -68,14 +70,14 @@ public class VideoController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<Video>> getAllVideos() {
-        List<Video> videos = videoService.getAllVideos();
+    public ResponseEntity<Page<Video>> getAllVideos(Pageable pageable) {
+        Page<Video> videos = videoService.getAllVideos(pageable);
         return ResponseEntity.ok(videos);
     }
 
     @GetMapping("/category/{category}")
-    public ResponseEntity<List<Video>> getVideosByCategory(@PathVariable String category) {
-        List<Video> videos = videoService.getVideosByCategory(category);
+    public ResponseEntity<Page<Video>> getVideosByCategory(@PathVariable String category, Pageable pageable) {
+        Page<Video> videos = videoService.getVideosByCategory(category, pageable);
         return ResponseEntity.ok(videos);
     }
 

@@ -29,7 +29,7 @@ export default function CommentList({ videoId }) {
     };
 
     if (commentList?.length === 0) {
-        return <p>There are no comment yet...</p>;
+        return <p className="mb-6">There are no comment yet...</p>;
     }
 
     return (
