@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("comment")
+@RequestMapping("/comment")
 public class CommentController {
 
     private final CommentService commentService;
@@ -35,5 +35,33 @@ public class CommentController {
     public ResponseEntity<List<Comment>> getCommentListByVideoId(@PathVariable("videoId") String videoId) {
         List<Comment> commentList = commentService.getCommentListByVideoId(videoId);
         return ResponseEntity.status(HttpStatus.OK).body(commentList);
+    }
+
+    @DeleteMapping("/delete/{commentId}")
+    public ResponseEntity<String> deleteComment(@PathVariable("commentId") String commentId) {
+        try {
+            if (commentService.deleteComment(commentId)) {
+                return ResponseEntity.status(HttpStatus.OK).body("success");
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("fail");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @PostMapping(value = "/edit/{commentId}", consumes = "text/plain")
+    public ResponseEntity<String> editComment(
+            @PathVariable("commentId") String commentId,
+            @RequestBody String comment) {
+        try {
+            if (commentService.editComment(commentId, comment)) {
+                return ResponseEntity.status(HttpStatus.OK).body("success");
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("fail");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 }

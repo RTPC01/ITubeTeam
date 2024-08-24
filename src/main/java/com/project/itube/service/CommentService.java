@@ -8,4 +8,6 @@ import java.util.List;
 public interface CommentService {
     boolean uploadComment(WriteCommentDTO writeCommentDTO);
     List<Comment> getCommentListByVideoId(String id);
+    boolean deleteComment(String id);
+    boolean editComment(String commentId, String commentDescription);
 }

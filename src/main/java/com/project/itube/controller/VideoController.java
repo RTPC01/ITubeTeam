@@ -18,11 +18,9 @@ import java.util.Optional;
 public class VideoController {
 
     private final VideoService videoService;
-    private final SecurityUtil securityUtil;
 
-    public VideoController(VideoService videoService, SecurityUtil securityUtil) {
+    public VideoController(VideoService videoService) {
         this.videoService = videoService;
-        this.securityUtil = securityUtil;
     }
 
     @PostMapping("/upload")
@@ -65,7 +63,6 @@ public class VideoController {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete video");
             }
         } catch (Exception e) {
-            // 예외 메시지를 바디에 포함하여 클라이언트로 전송
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
         }
     }
