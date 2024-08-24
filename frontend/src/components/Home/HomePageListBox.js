@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import EyeIcon from "../../svg/EyeIcon";
 import PenIcon from "../../svg/PenIcon";
@@ -8,6 +8,7 @@ import useFetch from "../../api/useFetch";
 export default function HomePageListBox ({ video }) {
     const {data: userData, loading, error} = useFetch(`userInfo/${video.authorId}`);
     const videoThumbnail = video.videoUrl ? video.videoUrl.replace(/\.[^/.]+$/, '.jpg') : null;
+    const uploadDate = video.uploadDate.substr(0, 10);
 
     return (
         <div
@@ -27,7 +28,7 @@ export default function HomePageListBox ({ video }) {
                 <div className="mb-4 flex items-center justify-between gap-4">
                                 <span
                                     className="me-2 rounded bg-primary-100 px-2.5 py-0.5 text-xs font-medium text-primary-800 dark:bg-primary-900 dark:text-primary-300">
-                                    {video.uploadDate}
+                                    {uploadDate}
                                 </span>
 
                     <div className="flex items-center justify-end gap-1">
@@ -45,10 +46,10 @@ export default function HomePageListBox ({ video }) {
                     </div>
                 </div>
 
-                <a href="#"
+                <div
                    className="text-lg font-semibold leading-tight text-gray-900 hover:underline dark:text-white">
                     {video.title}
-                </a>
+                </div>
 
                 <div className="mt-2 flex items-center gap-2">
                     <div className="flex items-center">

@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import { useDropzone } from "react-dropzone";
 import { asyncPost } from "../../api/async";
 import ModalFrame from "./ModalFrame";
+import categories from "../Constants/categories";
 
 function VideoPostModal({ onClose }) {
     const [videoFile, setVideoFile] = useState(null);
@@ -12,12 +13,6 @@ function VideoPostModal({ onClose }) {
 
     const labelClassName = "block mb-2 text-sm font-medium text-gray-900 dark:text-white";
     const inputClassName = "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500";
-    const videoCategory = [
-        'Game',
-        'Music',
-        'Vlog',
-        'Humor'
-    ]
 
     const onDrop = (acceptedFile) => {
         setVideoFile(acceptedFile[0]);
@@ -92,8 +87,8 @@ function VideoPostModal({ onClose }) {
                                 value={category} required onChange={(e) => setCategory(e.target.value)}>
                             <option value="">Select Category</option>
                             {
-                                videoCategory.map((category, index) => (
-                                    <option key={index} value={category}>{category}</option>
+                                categories.map((category, index) => (
+                                    <option key={index} value={category.name}>{category.label}</option>
                                 ))
                             }
                         </select>

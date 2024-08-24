@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import Breadcrumb from "../Layout/Breadcrumb";
 import DropdownButton from "../Layout/DropdownButton";
 import StickyButton from "../Layout/StickyButton";
@@ -8,6 +8,7 @@ import LogoImg from "../Layout/LogoImg";
 import HomePageListBox from "./HomePageListBox";
 import useFetch from "../../api/useFetch";
 import Pagination from "../Layout/Pagination";
+import categories from "../Constants/categories";
 
 export default function Home() {
     const [openPostModal, setOpenPostModal] = useState(false);
@@ -44,34 +45,17 @@ export default function Home() {
                         </div>
                         <div className="flex items-center space-x-4">
                             <DropdownButton
-                                buttonText="Category"
+                                buttonText={selectedCategory}
                                 buttonIcon="M7 4v16M7 4l3 3M7 4 4 7m9-3h6l-6 6h6m-6.5 10 3.5-7 3.5 7M14 18h4"
                             >
-                                <button
-                                    className={categoryButtonClassName}
-                                    onClick={() => handleCategoryChange('All')}>
-                                    All
-                                </button>
-                                <button
-                                    className={categoryButtonClassName}
-                                    onClick={() => handleCategoryChange('Game')}>
-                                    Game
-                                </button>
-                                <button
-                                    className={categoryButtonClassName}
-                                    onClick={() => handleCategoryChange('Music')}>
-                                    Music
-                                </button>
-                                <button
-                                    className={categoryButtonClassName}
-                                    onClick={() => handleCategoryChange('Vlog')}>
-                                    Vlog
-                                </button>
-                                <button
-                                    className={categoryButtonClassName}
-                                    onClick={() => handleCategoryChange('Humor')}>
-                                    Humor
-                                </button>
+                                {categories.map(category => (
+                                    <button
+                                        key={category.name}
+                                        className={categoryButtonClassName}
+                                        onClick={() => handleCategoryChange(category.name)}>
+                                        {category.label}
+                                    </button>
+                                ))}
                             </DropdownButton>
                         </div>
                     </div>
