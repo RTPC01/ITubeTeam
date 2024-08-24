@@ -48,7 +48,6 @@ function useFetch(url, method = 'GET', body = null, headers = {}) {
             isMounted = false;
         };
     }, [url]);
-
     return { data, loading, error };
 }
 

@@ -1,9 +1,11 @@
+import React, {useContext, useState} from "react";
+
 import LogoImg from "./LogoImg";
 import AuthContext from "../Context/AuthContext";
 import ProfileButton from "./ProfileButton";
 import LoginModal from "../Modal/LoginModal";
+import logout from "../../utils/logout";
 
-import React, {useContext, useEffect, useState} from "react";
 export default function Header() {
     const [modalOpen, setModalOpen] = useState(false);
     const openModal = () => {
@@ -15,6 +17,11 @@ export default function Header() {
     const { user } = useContext(AuthContext);
     const menuLiClassName = "block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700";
 
+    const handleLogoutClick = () => {
+        logout();
+        window.location.reload();
+    }
+
     return (
         <header className="border border-gray-200">
             <nav className="bg-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
@@ -25,7 +32,16 @@ export default function Header() {
                             className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">ITube</span>
                     </a>
                     <div className="flex items-center lg:order-2">
-                        {user ? (<ProfileButton nickName={user.nickname} ImgUrl={user.profileImg}/>) : (
+                        {user ? (
+                            <>
+                                <ProfileButton nickName={user.nickname} ImgUrl={user.profileImg}/>
+                                <button type="button"
+                                        className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+                                        onClick={handleLogoutClick}
+                                >
+                                    Logout
+                                </button>
+                            </>) : (
                             <>
                                 <a onClick={openModal}
                                    className="border border-gray-200 text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
@@ -67,28 +83,8 @@ export default function Header() {
                             <li>
                                 <a href="#"
                                    className={menuLiClassName}>
-                                    Company
+                                    Contact Us
                                 </a>
-                            </li>
-                            <li>
-                                <a href="#"
-                                   className={menuLiClassName}>
-                                    Marketplace</a>
-                            </li>
-                            <li>
-                                <a href="#"
-                                   className={menuLiClassName}>
-                                    Marketplace</a>
-                            </li>
-                            <li>
-                                <a href="#"
-                                   className={menuLiClassName}>
-                                    Marketplace</a>
-                            </li>
-                            <li>
-                                <a href="#"
-                                   className={menuLiClassName}>
-                                    Marketplace</a>
                             </li>
                         </ul>
                     </div>

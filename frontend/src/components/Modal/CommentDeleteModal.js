@@ -1,23 +1,15 @@
-import React, {useEffect, useState} from "react";
-import { useNavigate } from "react-router-dom";
-import ModalFrame from "./ModalFrame";
+import React, {useState} from "react";
 import useFetch from "../../api/useFetch";
+import ModalFrame from "./ModalFrame";
 
-function VideoDeleteModal({ onClose, videoId }) {
-    const [url, setUrl]= useState(null);
+function CommentDeleteModal({ onClose, commentId }) {
+    const [url, setUrl] = useState(null);
     const userTokenHeader = {'Authorization': `Bearer ${localStorage.getItem("token")}`};
     const { data: responseData, loading, error } = useFetch(url, 'DELETE', null, userTokenHeader);
-    const navigate = useNavigate();
 
     const handleDelete = () => {
-        setUrl(`/api/video/delete/${videoId}`);
+        setUrl(`/comment/delete/${commentId}`);
     }
-
-    useEffect(() => {
-        if (responseData) {
-            navigate("/");
-        }
-    }, [responseData, navigate]);
 
     return (
         <>
@@ -45,4 +37,4 @@ function VideoDeleteModal({ onClose, videoId }) {
     )
 }
 
-export default ModalFrame(VideoDeleteModal);
+export default ModalFrame(CommentDeleteModal);

@@ -2,15 +2,15 @@ package com.project.itube.controller;
 
 import com.project.itube.dto.VideoUploadDTO;
 import com.project.itube.entity.Video;
-import com.project.itube.security.SecurityUtil;
 import com.project.itube.service.VideoService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -18,11 +18,9 @@ import java.util.Optional;
 public class VideoController {
 
     private final VideoService videoService;
-    private final SecurityUtil securityUtil;
 
-    public VideoController(VideoService videoService, SecurityUtil securityUtil) {
+    public VideoController(VideoService videoService) {
         this.videoService = videoService;
-        this.securityUtil = securityUtil;
     }
 
     @PostMapping("/upload")
@@ -65,20 +63,21 @@ public class VideoController {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete video");
             }
         } catch (Exception e) {
-            // 예외 메시지를 바디에 포함하여 클라이언트로 전송
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
         }
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<Video>> getAllVideos() {
-        List<Video> videos = videoService.getAllVideos();
+    public ResponseEntity<Page<Video>> getAllVideos(Pageable pageable) {
+        Page<Video> videos = videoService.getAllVideos(pageable);
         return ResponseEntity.ok(videos);
     }
 
-    @GetMapping("/category/{category}")
-    public ResponseEntity<List<Video>> getVideosByCategory(@PathVariable String category) {
-        List<Video> videos = videoService.getVideosByCategory(category);
+    @GetMapping("/category")
+    public ResponseEntity<Page<Video>> getVideosByCategory(@RequestParam String category, Pageable pageable) {
+        System.out.println("Category: " + category);
+        System.out.println("Pageable: " + pageable);
+        Page<Video> videos = videoService.getVideosByCategory(category, pageable);
         return ResponseEntity.ok(videos);
     }
 
